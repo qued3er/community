@@ -3,6 +3,9 @@ package com.ustc.software.controller;
 import com.ustc.software.service.UserService;
 import com.ustc.software.util.CommunityUtil;
 import com.ustc.software.util.HostHolder;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -10,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.File;
 import java.util.regex.Matcher;
@@ -21,6 +25,7 @@ import java.util.regex.Pattern;
  * @Description:
  * @date 2020/8/2622:40
  */
+@Api
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -37,13 +42,15 @@ public class UserController {
     //更新的是当前登录用户的头像
     @Autowired
     private HostHolder hostHolder;
+    @ApiOperation("设置用户信息界面")
     //访问设置用户信息的页面
     @RequestMapping(path = "/setting",method = RequestMethod.GET)
     public String getSettingPage(){
         return "/site/setting";
     }
+    @ApiOperation("上传图片")
     @RequestMapping(path = "/upload",method = RequestMethod.POST)
-    public String uploadHeader(MultipartFile headerImage, Model model){
+    public String uploadHeader(@ApiParam("图片") MultipartFile headerImage, @ApiIgnore Model model){
         if (headerImage==null){
             model.addAttribute("error", "请上传图片");
             return "/site/setting";

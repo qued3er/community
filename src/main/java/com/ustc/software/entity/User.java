@@ -1,5 +1,8 @@
 package com.ustc.software.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
 /**
@@ -8,18 +11,26 @@ import java.util.Date;
  * @Description:
  * @date 2020/8/1320:35
  */
+@ApiModel
 public class User {
     private int id;
+    @ApiModelProperty("用户名")
     private String username;
+    @ApiModelProperty("密码")
     private String password;
+    @ApiModelProperty("加密salt")
     private String salt;
+    @ApiModelProperty("邮箱")
     private String email;
+    @ApiModelProperty("用户类型 0普通 1超管 2版主")
     //0普通用户 1超级管理员 2版主
     private int type;
+    @ApiModelProperty("用户状态 0未激活 1已激活")
     //0未激活 1已激活
     private int status;
+    @ApiModelProperty("激活码")
     private String activationCode;
-
+    @ApiModelProperty("头像")
     private String headerUrl;
     private Date createTime;
 

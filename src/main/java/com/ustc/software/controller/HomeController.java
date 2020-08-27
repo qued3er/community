@@ -5,6 +5,9 @@ import com.ustc.software.entity.Page;
 import com.ustc.software.entity.User;
 import com.ustc.software.service.DiscussPostService;
 import com.ustc.software.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,15 +24,17 @@ import java.util.Map;
  * @Description:
  * @date 2020/8/1617:04
  */
+@Api("index页面访问操作")
 @Controller
 public class HomeController {
     @Autowired
     private DiscussPostService discussPostService;
     @Autowired
     private UserService userService;
+    @ApiOperation("分页请求index页面")
     //主页请求
     @RequestMapping("/index")
-    public String getIndexPage(Model model, Page page){
+    public String getIndexPage(Model model, @ApiParam("分页的参数") Page page){
         //方法调用之前：springmvc会直接把model与page实例化了，然后把page放入model 所以可以直接在thymleaf中使用page==》
         // 不用model.addAttribute()
         //分页的实现

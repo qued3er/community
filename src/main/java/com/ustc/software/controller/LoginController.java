@@ -4,6 +4,9 @@ import com.google.code.kaptcha.Producer;
 import com.ustc.software.entity.User;
 import com.ustc.software.service.UserService;
 import com.ustc.software.util.CommunityConstant;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -31,6 +35,7 @@ import java.util.Map;
  * @Description:
  * @date 2020/8/1718:57
  */
+@Api("登录逻辑的实现")
 @Controller
 public class LoginController implements CommunityConstant {
     private Logger logger= LoggerFactory.getLogger(LoginController.class);
@@ -40,13 +45,14 @@ public class LoginController implements CommunityConstant {
     private Producer kaptchaProducer;
     @Value("${server.servlet.context-path}")
     private String context;
+    @ApiOperation("访问注册页面")
     @RequestMapping(path = "/register",method = RequestMethod.GET)
     public String getRegisterPage(){
         return "/site/register";
     }
-
+    @ApiOperation("具体注册逻辑的实现")
     @RequestMapping(path = "/register",method = RequestMethod.POST)
-    public String register(Model model, User user){
+    public String register(@ApiIgnore Model model,@ApiParam("注册的user") User user){
         Map<String, Object> ok = userService.register(user);
         //注册成功
         if (ok==null||ok.isEmpty()){
@@ -69,6 +75,7 @@ public class LoginController implements CommunityConstant {
     }
     //community.path.domain=http://localhost:8080+server.servlet.context-path=/community + /activation/101/code
 //    String url=domain+contextPath+"/activation/"+user.getId()+"/"+user.getActivationCode();
+    @ApiOperation("激活userId用户，激活码为code")
     //如何从请求路径中获取信息？？
     @RequestMapping(path = "/activation/{userId}/{code}",method = RequestMethod.GET)
     //从请求路径中取参数
@@ -77,7 +84,9 @@ public class LoginController implements CommunityConstant {
     //失败回首页
     /**
      * 什么时候是 请求什么时候是路径   这return是请求还是路径*/
-    public String activation(Model model, @PathVariable("userId") int userId, @PathVariable("code") String code){
+    public String activation(Model model,
+                             @ApiParam("激活的userId") @PathVariable("userId") int userId,
+                             @ApiParam("激活码") @PathVariable("code") String code){
         int result = userService.activation(userId, code);
         if (result==ACTIVATION_SUCCESS){
             model.addAttribute("msg", "激活成功，即将转向登录页面");
@@ -91,18 +100,19 @@ public class LoginController implements CommunityConstant {
         }
         return "/site/operate-result";
     }
-
+    @ApiOperation("返回登录页面")
     //登录页面
     @RequestMapping(path = "/login",method = RequestMethod.GET)
     public String login(){
         return "/site/login";
     }
-
+    @ApiOperation("生成验证码")
     //获取验证码图片 login界面的一个验证码部分的一个请求
     @RequestMapping(path = "/kaptcha",method = RequestMethod.GET)
     //返回的是图片 通过response 手动向浏览器输出
-    //请求login界面  服务端会生成验证码    然后点击登录请求时 会携带验证码 。所以需要session记住浏览器与对应的验证码[跨请求]
-    public void getKaptcha(HttpServletResponse response, HttpSession session){
+    //请求login界面  服务端会生成验证码    然后点击登录请求时 会携带验证码 。
+    // 所以需要session记住浏览器与对应的验证码[跨请求]
+    public void getKaptcha(@ApiIgnore HttpServletResponse response, @ApiIgnore HttpSession session){
         //生成验证码
         String text = kaptchaProducer.createText();
         BufferedImage image = kaptchaProducer.createImage(text);
@@ -126,12 +136,18 @@ public class LoginController implements CommunityConstant {
             }
         }
     }
+    @ApiOperation("登录请求 方式post")
     //与上边login请求方式不同
     //用户请求页面的时候  生成的验证码放入了session中，需要在这拿出做对比是否验证码正确
     //要把生成的ticket放到response中返回给浏览器cookie。
     @RequestMapping(path = "/login",method = RequestMethod.POST)
-    public String login(String username,String password,String code,boolean rememberMe,Model model,HttpSession session,
-                        HttpServletResponse response){
+    public String login(@ApiParam("用户名") String username,
+                        @ApiParam("密码") String password,
+                        @ApiParam("验证码") String code,
+                        @ApiParam("是否记住我") boolean rememberMe,Model model,
+                        @ApiParam("session是为了验证" +
+                                "因为验证码和登录时不同的请求") @ApiIgnore HttpSession session,
+                        @ApiParam("生成登录凭证放到response") @ApiIgnore HttpServletResponse response){
         //判断验证码
         String kaptcha= (String) session.getAttribute("kaptcha");
         if (StringUtils.isBlank(code)||StringUtils.isBlank(kaptcha)||!kaptcha.equalsIgnoreCase(code)){
@@ -157,9 +173,10 @@ public class LoginController implements CommunityConstant {
             return "/site/login";
         }
     }
+    @ApiOperation("退出登录")
     //获取请求头中的cookie把他置无效
     @RequestMapping(path = "/logout",method = RequestMethod.GET)
-    public String logOut(@CookieValue("ticket")String cookie){
+    public String logOut(@ApiParam("退出用户的ticket") @CookieValue("ticket")String cookie){
         userService.loginOut(cookie);
         //重定向默认get   什么时候重定向？
         return "redirect:/login";

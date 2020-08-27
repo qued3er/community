@@ -1,5 +1,8 @@
 package com.ustc.software.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * @author li
  * @Title:
@@ -9,13 +12,18 @@ package com.ustc.software.entity;
 /*
 封装分页相关的信息
 * */
+@ApiModel("帖子分页")
 public class Page {
+    @ApiModelProperty("当前页码")
     //当前页码  默认值
     private int current =1;
+    @ApiModelProperty("显示上限个数")
     //显示的上限
     private int limit=10;
+    @ApiModelProperty("总条数")
     //数据总数  用于计算总页数  总数/上限
     private int rows;
+    @ApiModelProperty("分页的页数连接")
     //查询路径  分页的页数链接
     private String path;
 
