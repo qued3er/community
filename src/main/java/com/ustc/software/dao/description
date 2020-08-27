@@ -1,0 +1,5 @@
+sqlSessionFactory创建sqlsession的工厂
+sqlsession用于向数据库执行sql，相当于jdbc的connection
+=====》都被整合了
+
+要开发mapper接口 mapper映射器

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustc.software.dao.DiscussPostMapper">
+<!--复用的句子-->
+    <sql id="selectFields">
+        id,user_id,title,content,type,status,create_time,comment_count,score
+    </sql>
+<!--    List自带 可解析出来-->
+    <select id="selectDiscussPost" resultType="DiscussPost">
+        select <include refid="selectFields"></include>
+        from discuss_post
+--         拉黑的帖子不显示
+        where status!=2
+--         userId==0 时 表示不是个人主页发来的查询
+--         标签里使用的都是项目中的参数  sql 里用的都是sql名
+        <if test="userId!=0">
+            and user_id=#{userId}
+        </if>
+--         置顶排前边  一样按照创建时间
+        order by  type,create_time desc
+--         分页
+        limit #{offset},#{limit}
+    </select>
+    <select id="selectDiscussPostRows" resultType="int">
+-- 加count 记录总行数
+        select count(id)
+        from discuss_post
+        where status!=2
+        <if test="userId!=0">
+            and user_id=#{userId}
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--为哪个mapper服务-->
+<mapper namespace="com.ustc.software.dao.UserMapper">
+    <sql id="selectFields">
+        id,username,password,salt,email,type,status,activation_code,header_url,create_time
+    </sql>
+
+    <sql id="insertFields">
+        username, password, salt, email, type, status, activation_code, header_url, create_time
+    </sql>
+<!--    //记得对mapper做测试-->
+<!--    定义共享sql 复用代码-->
+<!--    id方法名 resultType   使用#引用参数中的东西  parameterType 什么时候需要声明参数类型 ==》当是一个bean复杂类型时
+keyProperty：数据库自动生成  回填到该bean的属性-->
+    <select id="findUserById" resultType="User">
+        select <include refid="selectFields"></include> from user
+        where id=#{id}
+    </select>
+    <select id="findUserByName" resultType="User">
+        select  <include refid="selectFields"></include>from user
+        where username=#{name}
+    </select>
+    <select id="findUserByEmail" resultType="User">
+        select  <include refid="selectFields"></include>from user
+        where email=#{email}
+    </select>
+<!--    解释为什么需要keyProperty 以及为什么插入的值无id  因为我们对mybatis使用了自增主键，所以不用传入，那么我们需要对
+指定哪个是主键 从而实现数据库生成的回填到对应的主键中  所以需要指定keyproperty-->
+    <insert id="insertUser" parameterType="User" keyProperty="id">
+        insert into user (<include refid="insertFields"></include>)
+        values(#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{headerUrl}, #{createTime})
+    </insert>
+    <update id="updateUserStatus">
+        update user set status=#{status} where id=#{id}
+    </update>
+    <update id="updateUserHeader">
+        update user set header_url=#{headerURL} where id=#{id}
+    </update>
+    <update id="updateUserPassword">
+        update user set password=#{password} where id=#{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,62 @@
+HTTP请求与响应的体的 字段
+[一个页面为什么有多个请求]
+浏览器向服务端发起一个请求，服务端返回HTML，HTML中有对css与js的引用，在渲染时需要它，又向服务器发起请求请求js与css等。
+
+不要把MVC的三层与后端的三层处理对应[MVC均在表现层]
+
+前端控制器来处理所有的传过来的请求，dispatcherservlet根据请求路径把对应的请求传给controller，controller处理后返回model给dispatcher
+前端控制器再调用viewtemplate并把model给他，生成动态的HTML网页，给dispatcherservlet，dispatcherervlet把html返回给前端
+
+模板引擎作用：生成动态html，模板引擎接收模板文件+model生成html [模板文件到底是什么]
+模板引擎的学习：标准表达式==》用于动态替换的值   判断与循环[集合] 模板布局[？]
+
+
+使用jdbc访问数据库... 学习
+
+
+homecontroller的index页面的访问流程：浏览器发过来index的请求  dispatcherservlet根据映射把请求交给homecontroller，
+然后homecontroller的 getindexpage处理该请求，对显示的帖子列表进行查询[调用service与dao]，然后查询实现分页。
+
+显示的帖子由于要把帖子当中的外键userId转化为对应的用户在前端显示，所以需要联合处理。[2种处理方法见controller]
+
+对于分页 需要知道总记录数 从而确定总页数   分页的当前页的链接[url请求]。然后把 Page  即分页需要的数据  以及 查询到的帖子
+返回给dispatcherServlet然后他会把这些交给thymeleaf模板引擎去渲染，渲染的页面时index.tml 渲染了之后返回给dispatcherServlet，
+它再将渲染好的页面返回给浏览器
+
+如何实现分页  通过thymleaf与Page的联合Page，Page封装 当前页以及请求的路径 总记录  以及每页的显示上限   page可以根据当前页以及
+最大显示记录数得出offset  去查询对应的帖子 这些给thymleaf  thymleaf 基于这个来确定显示的页数以及上一页 下一页 以及 1 2 3 等页数
+对应的href 当点到又会发送对应的请求给dispatcher 再查询进行分页。
+
+
+注册功能需要实现的：
+index页面 点击注册跳转到注册界面[href为什么是相对路径]
+
+通过post表单提交数据
+服务端需要验证账号是否已经存在、邮箱是否已经被注册
+服务端发送注册邮件
+
+点击注册邮件中的链接访问服务端的激活服务
+
+会话管理：【一个用户的所有请求操作都属于同一个会话   不同用户的请求操作在不同的会话。】
+HTTP是无状态的：即同一个浏览器的多次请求之间没有任何关系。      但是业务又具有连续性=========》  通过cookies/session[弥补了
+HTTP无状态  无法跟踪会话的不足]。
+
+cookie  服务器创建并发送给浏览器   浏览器下次访问服务器的时候 携带着cookie。
+cookie 创建  设置有效范围   [默认在内存 关掉就小时]cookie的生成时间[设了生存时间就保存到硬盘里]
+
+session  session在服务端的内存中，对服务端的资源消耗很大，但是优势在于安全，一般都是服务端的保护比客户端好。
+
+
+session于浏览器对应关系：[依赖于cookie] [cookie中存储的是sessionid]。
+
+cookie仅能存少量数据  且仅能字符串  因为要网络传输。  而session 不用网络传输 一直在服务端  所以什么数据都可存。
+
+分布式部署为什么使用session会有问题？
+粘性session[固定IP处理固定session]，负载不均衡。      同步session：session在服务器同步，同步性能影响。
+共享session： 一台服务器专门存session。[单点崩溃]      ====》会话数据存数据库[数据库分布式同步没问题] ===》
+存到sql型数据库？[硬盘读取，太慢]  内存性key/value===>redis。
+
+kaptcha:验证码
+1.引入包
+2.配置类
+3.生成随机字符=》再根据字符生成图片

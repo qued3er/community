@@ -1,0 +1,29 @@
+package com.ustc.software.util;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.DigestUtils;
+
+import java.util.UUID;
+
+/**
+ * @author li
+ * @Title:
+ * @Description:
+ * @date 2020/8/1719:32
+ */
+//工具类
+public class CommunityUtil {
+    //生成随机字符串  ===用户上传图片 需要随机字符串起名字  激活码生成
+    public static String getRandomString(){
+        return UUID.randomUUID().toString().replaceAll("_", "");
+    }
+    //MD5加密 对密码加密
+    //salt+password进行md5
+    public static String md5(String password){
+        //刚导入的commons-lang
+        if(StringUtils.isBlank(password)){
+            return null;
+        }
+        return DigestUtils.md5DigestAsHex(password.getBytes());
+    }
+}

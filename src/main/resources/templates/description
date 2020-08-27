@@ -1,0 +1,37 @@
+放动态的网页
+
+如何利用thymleaf进行html的标签复用？==》通过thymleaf:fragment 与thymleaf:replace
+
+根据登陆与否 隐藏头部显示    显示用户信息
+
+定义拦截器  实现handlerinterceptor====》还是在表现层
+
+preHandle[controller处理之前执行 ]===》参数handler
+
+postHandle Controller之后执行的 ===》[]
+
+afterCompletion[模板引擎之后执行]
+
+
+配置类要实现webMVCconfigurer接口  ===》注入拦截器
+
+静态资源的请求一般不被拦截
+
+拦截器的应用：
+在请求开始时查询登录的用户
+把用户的信息存到内存
+模板上显示用户的数据
+请求结束清理用户数据
+
+cookie中有ticket[cookie不直接存储用户的信息 因为比较敏感]   根据ticket可以查到对应的user 让后放到内存 提供使用
+[ex被模板引起拿去渲染]
+
+
+拦截器的好处？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？、
+
+
+修改密码自己实现
+
+上传文件  请求:post
+表单上加：enctype="multipart/from-data"
+MVC 通过MultipartFile处理上传文件

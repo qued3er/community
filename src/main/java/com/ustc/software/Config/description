@@ -1,0 +1,5 @@
+别人的jar包无法加注解   通过配置类
+@Configuration @Bean【方法名就是bean的名字】
+自动装配@Autowired @qualifier
+
+如何判断要不要写配置类？  没有与springboot集成的都需要配置。[引入pom无 spring-boot-xxxxx]
