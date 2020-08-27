@@ -1,6 +1,7 @@
 package com.ustc.software.controller;
 
 import com.ustc.software.service.UserService;
+import com.ustc.software.util.CommunityUtil;
 import com.ustc.software.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author li
@@ -44,6 +49,18 @@ public class UserController {
             return "/site/setting";
         }
         //UUID 防止重名字   后缀不能变 通过正则
-        headerImage.getOriginalFilename();
+        /*String regex="/.[.]+";
+        Pattern pattern = Pattern.compile(regex);
+        String filename = headerImage.getOriginalFilename();
+        Matcher matcher = pattern.matcher(filename);
+        String suffix=matcher.group();*/
+        String filename=headerImage.getOriginalFilename();
+        //匹配.+之后的类型
+        String suffix=filename.substring(filename.lastIndexOf("."));
+        //组成新的不重复的名字
+        String newFilename=CommunityUtil.getRandomString()+suffix;
+        //向服务器上传该文件
+//        File file=new File()
+        return "site/index";
     }
 }

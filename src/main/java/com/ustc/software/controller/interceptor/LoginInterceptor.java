@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -43,7 +41,12 @@ public class LoginInterceptor implements HandlerInterceptor {
                 hostHolder.setUser(curUser);
             }
         }
-        return false;
+        //之前是return false导致所有的请求都过不去    return true 与return false的作用
+        //true if the execution chain should proceed with the
+        // next interceptor or the handler itself. Else, DispatcherServlet assumes
+        //	 that this interceptor has already dealt with the response itself.
+        //	 @throws Exception in case of errors
+        return true;
     }
     //controller之后执行 需要去执行 把user放到modelandView中去 拿给模板引擎渲染
     @Override
@@ -55,7 +58,6 @@ public class LoginInterceptor implements HandlerInterceptor {
     }
 
     //模板引擎渲染完后 执行remove  否则会占用内存 一直增加
-
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         hostHolder.removeUser();
