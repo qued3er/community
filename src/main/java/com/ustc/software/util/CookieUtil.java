@@ -20,7 +20,7 @@ public class CookieUtil {
         if (cookies!=null) {
             for (Cookie cookie :
                     cookies) {
-                if (cookie.getName() == cookiename) {
+                if (cookie.getName().equals(cookiename)) {
                     return cookie.getValue();
                 }
             }

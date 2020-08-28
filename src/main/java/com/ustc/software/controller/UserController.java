@@ -70,4 +70,10 @@ public class UserController {
 //        File file=new File()
         return "site/index";
     }
+
+//    @RequestMapping("/updatepassword")
+//    public String updatePassword(Model model,int userId,String oldPassword,String newPassword){
+//        userService.findUserById(userId)
+//    }
+
 }

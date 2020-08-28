@@ -48,6 +48,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         //	 @throws Exception in case of errors
         return true;
     }
+
     //controller之后执行 需要去执行 把user放到modelandView中去 拿给模板引擎渲染
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {

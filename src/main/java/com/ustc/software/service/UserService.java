@@ -147,7 +147,8 @@ public class UserService implements CommunityConstant {
             return res;
         }
         String encry = CommunityUtil.md5(password + user.getSalt());
-        if (user.getPassword()!=encry){
+        //使用==判断 字符串的都是傻逼
+        if (!user.getPassword().equals(encry)){
             res.put("passwordMessage", "密码错误");
             return res;
         }
@@ -173,5 +174,9 @@ public class UserService implements CommunityConstant {
     //更新user头像路径  真正实现存储在表现层 因为multipartFile是MVC的对象
     public int updateHeader(int userId,String headerUrl){
         return userMapper.updateUserHeader(userId, headerUrl);
+    }
+    //更新password
+    public int updatePassword(int id,String password){
+        return userMapper.updateUserHeader(id, password);
     }
 }

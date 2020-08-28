@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class HostHolder {
     /*set 往里边存值   根据线程来存的  每个线程map对象不一样
     * 需要深入了解ThreadLocal*/
-    private ThreadLocal<User> users=new ThreadLocal();
+    private ThreadLocal<User> users=new ThreadLocal<>();
 
     public  void setUser(User user){
         users.set(user);

@@ -40,3 +40,16 @@ MVC 通过MultipartFile处理上传文件
 
 在web开发中，为了实现登录权限验证，我们不可能在每个方法中都写代码去验证身份信息，
 常见的是在springboot中添加一个拦截器在用户的的请求到达controller层的时候实现登录验证
+
+
+Session中没去有我们的cookie
+
+
+首先登陆：post提交表单，到后台的post /login请求 在/login中调用了 userservice.login 会生成ticket 放到response的cookie中，返回给客户端。
+并重定向到index。
+在redirect到index之前，会被拦截器拦截，此时已经有了ticket，所以去库里查并找到当前的user把它set到HostHolder中去。
+
+在login的controller执行完毕之后，会到postHandle()方法此时会把把当前线程的ThreadLocal中去拿user放到modelAndView中，拿给
+模板引擎去渲染。
+
+redirect到index之前  没被preHandle拦截。

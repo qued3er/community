@@ -100,12 +100,14 @@ public class LoginController implements CommunityConstant {
         }
         return "/site/operate-result";
     }
+
     @ApiOperation("返回登录页面")
     //登录页面
     @RequestMapping(path = "/login",method = RequestMethod.GET)
     public String login(){
         return "/site/login";
     }
+
     @ApiOperation("生成验证码")
     //获取验证码图片 login界面的一个验证码部分的一个请求
     @RequestMapping(path = "/kaptcha",method = RequestMethod.GET)
@@ -144,7 +146,8 @@ public class LoginController implements CommunityConstant {
     public String login(@ApiParam("用户名") String username,
                         @ApiParam("密码") String password,
                         @ApiParam("验证码") String code,
-                        @ApiParam("是否记住我") boolean rememberMe,Model model,
+                        @ApiParam("是否记住我") boolean rememberMe,
+                        Model model,
                         @ApiParam("session是为了验证" +
                                 "因为验证码和登录时不同的请求") @ApiIgnore HttpSession session,
                         @ApiParam("生成登录凭证放到response") @ApiIgnore HttpServletResponse response){
@@ -173,6 +176,7 @@ public class LoginController implements CommunityConstant {
             return "/site/login";
         }
     }
+
     @ApiOperation("退出登录")
     //获取请求头中的cookie把他置无效
     @RequestMapping(path = "/logout",method = RequestMethod.GET)
