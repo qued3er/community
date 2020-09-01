@@ -2,6 +2,7 @@ package com.ustc.software.dao;
 
 import com.ustc.software.entity.LoginTicket;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author li
@@ -10,6 +11,7 @@ import org.apache.ibatis.annotations.*;
  * @date 2020/8/1916:15
  */
 @Mapper
+@Repository
 //通过注解去声明对应sql
 public interface LoginTicketMapper {
     @Insert({"insert into login_ticket (user_id,ticket,status,expired) values(#{userId},#{ticket},#{status},#{expired})"})

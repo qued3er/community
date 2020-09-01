@@ -3,17 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>>
 </head>
 <body>
-<!--点击  发送post请求到action   请求路径前由于配置了  所以需要加上community-->
-<form method="post" action="/community/alpha/addUser">
-    <input type="text" name="name"><br/>
-    <input type="text" name="age"><br/>
-    <input type="submit"name="go">
-</form>
-<form method="post" action="/community/alpha/addLanguage">
-    <input type="text" name="language"><br/>
-    <input type="submit" name="go"><br/>
-</form>
+<!--&lt;!&ndash;点击  发送post请求到action   请求路径前由于配置了  所以需要加上community&ndash;&gt;-->
+<!--<form method="post" action="/community/alpha/addUser">-->
+<!--    <input type="text" name="name"><br/>-->
+<!--    <input type="text" name="age"><br/>-->
+<!--    <input type="submit"name="go">-->
+<!--</form>-->
+<!--<form method="post" action="/community/alpha/addLanguage">-->
+<!--    <input type="text" name="language"><br/>-->
+<!--    <input type="submit" name="go"><br/>-->
+<!--</form>-->
+<!--点击是调用send() 须引入jquery-->
+    <p>
+        <input type="button" value="发送" onclick="send();">
+    </p>
+
+<!--    Jquery发送异步请求-->
+    <script>
+        function send() {
+            // 可发post或get  或ajax  $.post
+            $.post(
+                // 首先是访问路径
+                "/community/alpha/ajax",
+                {"name":"张三","age":"23"},
+                //回调函数 data是服务器向浏览器返回的数据  post请求得到回复后 浏览器调用该方法   data是一个字符串
+                function (data) {
+                    console.log(typeof (data));
+                    console.log(data)
+                    //把字符串转化为JSON
+                    data=$.parseJSON(data);
+                    console.log(data.code);
+                    console.log(data.msg);
+                }
+            )
+        }
+    </script>
+<!--之前的jquery路径有问题 需要更换成百度的-->
+<!--    <script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.3.1/jquery.min.js"></script>-->
 </body>
 </html>

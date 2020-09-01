@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
  * @date 2020/8/1320:56
  */
 @Mapper
-//    @Repository
+@Repository
 public interface UserMapper {
     //根据name id  email查User
     User findUserByName(String name);

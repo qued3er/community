@@ -129,4 +129,12 @@ public class AlphaController {
         return "get cookie";
     }
 
+    //AJAX实例  异步提交数据 ===>异步请求返回字符串不返回网页
+    @RequestMapping(path = "/ajax",method = RequestMethod.POST)
+    @ResponseBody
+    public String testAjax(String name,String age){
+        System.out.println(name);
+        System.out.println(age);
+        return CommunityUtil.getJSONString(0,"ok");
+    }
 }

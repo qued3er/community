@@ -9,6 +9,7 @@
 	<link rel="stylesheet" th:href="@{/css/login.css}" />
 	<title>牛客网-账号设置</title>
 </head>
+
 <body>
 	<div class="nk-container">
 		<!-- 头部 -->
@@ -64,13 +65,17 @@
 			<div class="container p-5 mt-3 mb-3">
 				<!-- 上传头像 -->
 				<h6 class="text-left text-info border-bottom pb-2">上传头像</h6>
-				<form class="mt-5">
+				<form class="mt-5" method="post" enctype="multipart/form-data" action="/user/upload">
 					<div class="form-group row mt-4">
 						<label for="head-image" class="col-sm-2 col-form-label text-right">选择头像:</label>
 						<div class="col-sm-10">
 							<div class="custom-file">
-								<input type="file" class="custom-file-input" id="head-image" lang="es" required="">
+								<input type="file" th:class="|custom-file-input ${error!=null?'is-invalid':''}|"
+									   name="headerImage" id="head-image" lang="es" required="">
 								<label class="custom-file-label" for="head-image" data-browse="文件">选择一张图片</label>
+								<div class="invalid-feedback" th:text="${error}">
+									该账号不存在!
+								</div>
 							</div>
 						</div>
 					</div>
@@ -184,9 +189,9 @@
 		</footer>
 	</div>
 
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+	<script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js" crossorigin="anonymous"></script>
 	<script th:src="@{/js/global.js}"></script>
 	<script>
