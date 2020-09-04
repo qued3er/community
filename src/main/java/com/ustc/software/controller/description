@@ -71,3 +71,17 @@ kaptcha:验证码
 过滤敏感词===》把敏感词组成一个前缀树   然后编写过滤敏感词的方法。
 
 
+统一异常处理：
+异常在MVC三层怎么传递的？
+        用户方面  可以在templates下建：文件夹的名字一定是error   文件的名字为错误状态 当出现对应的错误状态是就会转向对应的页面
+服务器方面：@ControllerAdvice 对controller做全局配置===》用于修饰类
+            可做三种全局配置：1.异常处理方案2.绑定数据方案3.绑定参数方案
+                对应于三个注解：[用于修饰方法]
+                        @ExceptionHandler===>controller出现异常后被调用
+
+                        试试用途。
+                        @ModelAttribute====》controller执行前被调用 用于为Model对象绑定参数
+                        @DataBinder====》controller之前用于绑定参数的转换器
+
+
+

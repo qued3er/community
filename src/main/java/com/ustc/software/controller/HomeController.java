@@ -68,4 +68,10 @@ public class HomeController {
         //返回templete下的index.html
         return "/index";
     }
+
+    //返回500页面
+    @RequestMapping("/error")
+    public String getErrorPage(){
+        return "/error/500";
+    }
 }
